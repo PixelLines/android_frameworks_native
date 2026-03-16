@@ -124,6 +124,9 @@ cc_defaults {
     ] + select(soong_config_variable("qtidisplay", "headers_namespace"), {
         any @ flag_val: ["-DQCOM_UM_FAMILY"],
         default: [],
+    }) + select(soong_config_variable("surfaceflinger", "supports_oplus_adfr"), {
+        true: ["-DOPLUS_ADFR"],
+        default: [],
     }),
     shared_libs: [
         "android.hardware.common-V2-ndk",
@@ -331,7 +334,10 @@ filegroup {
         "TunnelModeEnabledReporter.cpp",
         "Utils/FenceUtils.cpp",
         "WindowInfosListenerInvoker.cpp",
-    ],
+    ] + select(soong_config_variable("surfaceflinger", "supports_oplus_adfr"), {
+        true: ["OplusAdfr.cpp"],
+        default: [],
+    }),
 }
 
 cc_defaults {
